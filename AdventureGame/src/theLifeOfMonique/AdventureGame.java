@@ -18,19 +18,45 @@ import hsa_new.Console;
 public class AdventureGame {
 
 	public static void main(String[] args) {
-		Console c = new Console(20, 70, 16, "A Day in the Life of Monique"); //console size & fontsize TBD
+		Console c = new Console(40, 140, "A Day in The Life of Monique"); //console size and font size TBD
 		int playAgainLoop = 1;
-		BufferedImage pngImage = null;
+		BufferedImage pngImage1 = null;
+		BufferedImage pngImage2 = null;
+		BufferedImage pngImage3 = null;
+		BufferedImage pngImage4 = null;
+		BufferedImage pngImage5 = null;
+		BufferedImage pngImage6 = null;
+		BufferedImage pngImage7 = null;
+		BufferedImage pngImage8 = null;
+		BufferedImage pngImage9 = null;
+		BufferedImage pngImage10 = null;
+		BufferedImage pngImage11 = null;
+		BufferedImage pngImage12 = null;
+		BufferedImage pngImage13 = null;
+		BufferedImage pngImage14 = null;
+		try {
+			pngImage1 = ImageIO.read(new File("adventure game pics/characters.png"));
+			pngImage2 = ImageIO.read(new File("adventure game pics/bedroom.png"));
+			pngImage3 = ImageIO.read(new File("adventure game pics/kitchen.png"));
+			pngImage4 = ImageIO.read(new File("adventure game pics/bike.png"));
+			pngImage5 = ImageIO.read(new File("adventure game pics/drive.png"));
+			pngImage6 = ImageIO.read(new File("adventure game pics/school with mom.png"));
+			pngImage7 = ImageIO.read(new File("adventure game pics/pizza hut.png"));
+			pngImage8 = ImageIO.read(new File("adventure game pics/homecoming.png"));
+			pngImage9 = ImageIO.read(new File("adventure game pics/hallway.png"));
+			pngImage10 = ImageIO.read(new File("adventure game pics/obliteration.png"));
+			pngImage11 = ImageIO.read(new File("adventure game pics/calculus.png"));
+			pngImage12 = ImageIO.read(new File("adventure game pics/library.png"));
+			pngImage13 = ImageIO.read(new File("adventure game pics/peru.png"));
+			pngImage14 = ImageIO.read(new File("adventure game pics/party.png"));
+		} catch (IOException e) {
+			System.err.println("There was an error loading the image.");
+			e.printStackTrace();
+		}
 		while (playAgainLoop == 1) {
 			//First Choice = Asks if user is okay with their name being Monique, if they say no, it loops until they say yes.
 			c.println("Your name is Monique, is this okay? (Yes/No)");
-			try {
-				pngImage = ImageIO.read(new File("adventure game pics/characters.png"));
-			} catch (IOException e) {
-				System.err.println("There was an error loading the image.");
-				e.printStackTrace();
-			}
-			c.drawImage (pngImage, 200, 140, 500, 250, null); //picture dimensions TBD
+			c.drawImage (pngImage1, 175, 200, 750, 422, null); 
 			String userReply;
 			userReply = c.readString();
 			if (userReply.equalsIgnoreCase("No")){
@@ -42,6 +68,7 @@ public class AdventureGame {
 			else if (userReply.equalsIgnoreCase("Yes")) {
 				do { //This loops allows the user to repeat their choice if they decide to apologize to their parents after complaining.
 					c.clear();
+					c.drawImage (pngImage2, 0, 0, 1160, 844, null);
 					if (userReply.equalsIgnoreCase("Apologize")){
 						c.println("You're forgiven :)");
 					}
@@ -49,10 +76,13 @@ public class AdventureGame {
 					userReply = c.readString();
 					if (userReply.equalsIgnoreCase("Breakfast")) {
 						c.clear();
+
+						c.drawImage (pngImage3, 0, 0, 1160, 844, null);
 						c.println("Would you like to get a drive or bike to school? (Bike/Drive)");
 						userReply = c.readString();
 						if (userReply.equalsIgnoreCase("Bike")) {
 							c.clear();
+							c.drawImage (pngImage4, 0, 0, 1160, 844, null);
 							c.println("Would you like to take the safe way or the dangerous way? (Safe/Dangerous)");
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Dangerous")) {
@@ -83,6 +113,7 @@ public class AdventureGame {
 								c.println("Do you vote for the nice student president or the mean student president? (Nice/Mean).");
 								userReply = c.readString();
 								if (userReply.equalsIgnoreCase("Nice")) {
+									c.clear();
 									c.println("WOW! AMAZING! YOU MEET JACOB SATORIUS!! WOOHOO!"); //Play Sweatshirt
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
@@ -95,6 +126,7 @@ public class AdventureGame {
 									}
 								}
 								else if (userReply.equalsIgnoreCase("Mean")) {
+									c.clear();
 									c.println("VAMPIRE ATTACK! oh no! Luckily it was Edward. #togetherforever");
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
@@ -136,6 +168,9 @@ public class AdventureGame {
 						}
 						else if (userReply.equalsIgnoreCase("Drive")) {
 							c.clear();
+							c.drawImage (pngImage5, 0, 0, 1160, 844, null);
+							c.println("Your mom embarrasses you. Brittany makes fun of you. What do you do? (Fight/Ignore)");
+							c.drawImage (pngImage6, 0, 0, 1160, 844, null);
 							c.println("Your mom embarrasses you. Brittany makes fun of you. What do you do? (Fight/Ignore)");
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Ignore")) {
@@ -188,7 +223,10 @@ public class AdventureGame {
 									}
 									else if (userReply.equalsIgnoreCase("Chad")){
 										c.clear();
+										c.drawImage (pngImage7, 0, 0, 1160, 844, null);	
 										c.println("You go on a Pizza Hut date and later become the homecoming queen!");	
+										c.println("Would you like to play again? (Yes/No)");
+										c.drawImage (pngImage8, 0, 0, 1160, 844, null);
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
@@ -368,6 +406,7 @@ public class AdventureGame {
 						userReply = c.readString();
 						if (userReply.equalsIgnoreCase("Complain")){
 							c.clear();
+							c.drawImage (pngImage9, 0, 0, 1160, 844, null);
 							c.print("You are late to school but it's okay. You go to the office to get your locker combo. It will be: ");
 							int[]lockerCode = new int[4];
 							for (int i = 0; i < lockerCode.length; i++) {
@@ -379,7 +418,9 @@ public class AdventureGame {
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Phys.Ed")){
 								c.clear();
-								c.println("You meet a boy named Troy. You fall madly in love and the school is obliterated");
+								c.println("You meet a boy named Troy. You fall madly in love!");									
+								c.drawImage (pngImage10, 0, 0, 1160, 844, null);
+								c.println("OBLITERATION!");
 								c.println("Would you like to play again? (Yes/No)");
 								userReply = c.readString();
 								if (userReply.equalsIgnoreCase("Yes")) {
@@ -392,6 +433,7 @@ public class AdventureGame {
 							}
 							else if (userReply.equalsIgnoreCase("Calculus")){
 								c.clear();
+								c.drawImage (pngImage11, 0, 0, 1160, 844, null);
 								c.println("Awh this class is boring but you meet a cute boy named Chad!");
 								c.println("Chad offers to help you with homework. Do you say yes??? (Yes/No)");
 								userReply = c.readString();
@@ -401,7 +443,10 @@ public class AdventureGame {
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Library")){
 										c.clear();
+										c.drawImage (pngImage12, 0, 0, 1160, 844, null);
 										c.println("You and Chad become close friends and together learn Latin and move to Peru!");
+										c.println("Would you like to play again? (Yes/No)");
+										c.drawImage (pngImage13, 0, 0, 1160, 844, null);
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
@@ -498,6 +543,7 @@ public class AdventureGame {
 										}
 										else if (userReply.equalsIgnoreCase("Yes")){
 											c.clear();
+											c.drawImage (pngImage14, 0, 0, 1160, 844, null);
 											c.println("The party is amazing!! Troy offers you a drink. Do you take it? (Yes/No)");
 											userReply = c.readString();
 											if (userReply.equalsIgnoreCase("No")){
@@ -644,3 +690,7 @@ public class AdventureGame {
 		}
 	}
 }
+//Fix picture problems (some text did no load)
+//Add sounds
+//Add comments
+//Add more pictures
