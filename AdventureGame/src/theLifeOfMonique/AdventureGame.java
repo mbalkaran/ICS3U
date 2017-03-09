@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import hsa_new.Console;
 
@@ -53,6 +55,13 @@ public class AdventureGame {
 			System.err.println("There was an error loading the image.");
 			e.printStackTrace();
 		}
+		/** try {
+			Clip theme = AudioSystem.getClip();
+			theme.open(AudioSystem.getAudioInputStream(new File("Small Crowd Booing Sound Effect.wav")));
+			Thread.sleep(1000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} */
 		while (playAgainLoop == 1) {
 			//First Choice = Asks if user is okay with their name being Monique, if they say no, it loops until they say yes.
 			c.println("Your name is Monique, is this okay? (Yes/No)");
@@ -76,7 +85,6 @@ public class AdventureGame {
 					userReply = c.readString();
 					if (userReply.equalsIgnoreCase("Breakfast")) {
 						c.clear();
-
 						c.drawImage (pngImage3, 0, 0, 1160, 844, null);
 						c.println("Would you like to get a drive or bike to school? (Bike/Drive)");
 						userReply = c.readString();
@@ -168,10 +176,10 @@ public class AdventureGame {
 						}
 						else if (userReply.equalsIgnoreCase("Drive")) {
 							c.clear();
-							c.drawImage (pngImage5, 0, 0, 1160, 844, null);
+							c.drawImage (pngImage5, 0, 0, 1160, 422, null);
+							c.drawImage (pngImage6, 0, 422, 1160, 422, null);
 							c.println("Your mom embarrasses you. Brittany makes fun of you. What do you do? (Fight/Ignore)");
-							c.drawImage (pngImage6, 0, 0, 1160, 844, null);
-							c.println("Your mom embarrasses you. Brittany makes fun of you. What do you do? (Fight/Ignore)");
+							
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Ignore")) {
 								c.clear();
@@ -223,11 +231,11 @@ public class AdventureGame {
 									}
 									else if (userReply.equalsIgnoreCase("Chad")){
 										c.clear();
-										c.drawImage (pngImage7, 0, 0, 1160, 844, null);	
+										c.drawImage (pngImage7, 0, 0, 1160, 422, null);	
+										c.drawImage (pngImage8, 0, 422, 1160, 422, null);
 										c.println("You go on a Pizza Hut date and later become the homecoming queen!");	
 										c.println("Would you like to play again? (Yes/No)");
-										c.drawImage (pngImage8, 0, 0, 1160, 844, null);
-										c.println("Would you like to play again? (Yes/No)");
+										
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
 											c.clear();
@@ -418,8 +426,8 @@ public class AdventureGame {
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Phys.Ed")){
 								c.clear();
-								c.println("You meet a boy named Troy. You fall madly in love!");									
 								c.drawImage (pngImage10, 0, 0, 1160, 844, null);
+								c.println("You meet a boy named Troy. You fall madly in love!");									
 								c.println("OBLITERATION!");
 								c.println("Would you like to play again? (Yes/No)");
 								userReply = c.readString();
@@ -443,10 +451,9 @@ public class AdventureGame {
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Library")){
 										c.clear();
-										c.drawImage (pngImage12, 0, 0, 1160, 844, null);
+										c.drawImage (pngImage12, 0, 0, 1160, 422, null);
+										c.drawImage (pngImage13, 0, 422, 1160, 422, null);
 										c.println("You and Chad become close friends and together learn Latin and move to Peru!");
-										c.println("Would you like to play again? (Yes/No)");
-										c.drawImage (pngImage13, 0, 0, 1160, 844, null);
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
@@ -690,7 +697,6 @@ public class AdventureGame {
 		}
 	}
 }
-//Fix picture problems (some text did no load)
 //Add sounds
 //Add comments
 //Add more pictures
