@@ -36,6 +36,12 @@ public class AdventureGame {
 		BufferedImage pngImage12 = null;
 		BufferedImage pngImage13 = null;
 		BufferedImage pngImage14 = null;
+		BufferedImage pngImage15 = null;
+		BufferedImage pngImage16 = null;
+		BufferedImage pngImage17 = null;
+		BufferedImage pngImage18 = null;
+		BufferedImage pngImage19 = null;
+		BufferedImage pngImage20 = null;
 		try {
 			pngImage1 = ImageIO.read(new File("adventure game pics/characters.png"));
 			pngImage2 = ImageIO.read(new File("adventure game pics/bedroom.png"));
@@ -51,17 +57,23 @@ public class AdventureGame {
 			pngImage12 = ImageIO.read(new File("adventure game pics/library.png"));
 			pngImage13 = ImageIO.read(new File("adventure game pics/peru.png"));
 			pngImage14 = ImageIO.read(new File("adventure game pics/party.png"));
+			pngImage15 = ImageIO.read(new File("adventure game pics/cafe.png"));
+			pngImage16 = ImageIO.read(new File("adventure game pics/fight kick.png"));
+			pngImage17 = ImageIO.read(new File("adventure game pics/fight pull.png"));
+			pngImage18 = ImageIO.read(new File("adventure game pics/police.png"));
+			pngImage19 = ImageIO.read(new File("adventure game pics/cat.png"));
+			pngImage20 = ImageIO.read(new File("adventure game pics/ditch.png"));	
 		} catch (IOException e) {
 			System.err.println("There was an error loading the image.");
 			e.printStackTrace();
 		}
-		/** try {
-			Clip theme = AudioSystem.getClip();
-			theme.open(AudioSystem.getAudioInputStream(new File("Small Crowd Booing Sound Effect.wav")));
-			Thread.sleep(1000);
+		Clip boo = null;
+		try {
+			boo = AudioSystem.getClip();
+			boo.open(AudioSystem.getAudioInputStream(new File("Audio/Small Crowd Booing Sound Effect.wav")));
 		} catch (Exception e) {
 			e.printStackTrace();
-		} */
+		}	
 		while (playAgainLoop == 1) {
 			//First Choice = Asks if user is okay with their name being Monique, if they say no, it loops until they say yes.
 			c.println("Your name is Monique, is this okay? (Yes/No)");
@@ -101,6 +113,7 @@ public class AdventureGame {
 								}
 								else {
 									c.clear();
+									c.drawImage (pngImage20, 0, 0, 1160, 844, null);
 									c.println("You fall in a ditch.");
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
@@ -179,7 +192,6 @@ public class AdventureGame {
 							c.drawImage (pngImage5, 0, 0, 1160, 422, null);
 							c.drawImage (pngImage6, 0, 422, 1160, 422, null);
 							c.println("Your mom embarrasses you. Brittany makes fun of you. What do you do? (Fight/Ignore)");
-							
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Ignore")) {
 								c.clear();
@@ -198,8 +210,11 @@ public class AdventureGame {
 								c.clear();
 								c.println("Would you like to pull her hair or kick her? (Pull/Kick)");
 								userReply = c.readString();
+
 								if (userReply.equalsIgnoreCase("Kick")){
 									c.clear();
+									boo.start();
+									c.drawImage (pngImage16, 0, 0, 1160, 844, null);
 									c.println("You lost the fight. #loser :(");
 									//insert the boo sound
 									c.println("Would you like to play again? (Yes/No)");
@@ -214,6 +229,7 @@ public class AdventureGame {
 								}
 								else if (userReply.equalsIgnoreCase("Pull")){
 									c.clear();
+									c.drawImage (pngImage17, 0, 0, 1160, 844, null);
 									c.println("You win the fight and become extremely popular!");
 									c.println("Ah wow! You are one lucky gal. Troy and Chad both ask you out. Who do you choose? (Troy/Chad/Both/Neither)");
 									userReply = c.readString();
@@ -264,6 +280,7 @@ public class AdventureGame {
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Troy")){
 											c.clear();
+											c.drawImage (pngImage19, 0, 0, 1160, 844, null);
 											c.println("You go over to his house to hang out. His cat comes near you and you run because you're allergic and you get hit by a car!");
 											c.println("Would you like to play again? (Yes/No)");
 											userReply = c.readString();
@@ -410,6 +427,7 @@ public class AdventureGame {
 					}
 					else if (userReply.equalsIgnoreCase("Complain")) {
 						c.clear();
+						c.drawImage (pngImage3, 0, 0, 1160, 844, null);
 						c.println("You are NOT getting a drive!! - Mom. Would you like to continue complaining or apologize? (Complain/Apologize)");
 						userReply = c.readString();
 						if (userReply.equalsIgnoreCase("Complain")){
@@ -466,6 +484,7 @@ public class AdventureGame {
 									}
 									else if (userReply.equalsIgnoreCase("Cafe")){
 										c.clear();
+										c.drawImage (pngImage15, 0, 0, 1160, 844, null);
 										c.println("Your ex boyfriend is there and he thinks Chad is your boyfriend. They fight and Chad goes to the hospital.");
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
@@ -568,6 +587,7 @@ public class AdventureGame {
 											}
 											else if (userReply.equalsIgnoreCase("Yes")){
 												c.clear();
+												c.drawImage (pngImage18, 0, 0, 1160, 844, null);
 												c.println("You are caught! The police come and you are charged with embezzelment.");
 												c.println("Would you like to play again? (Yes/No)");
 												userReply = c.readString();
