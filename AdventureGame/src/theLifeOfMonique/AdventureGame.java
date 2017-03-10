@@ -68,13 +68,19 @@ public class AdventureGame {
 			e.printStackTrace();
 		}
 		Clip boo = null;
-		try {
-			boo = AudioSystem.getClip();
-			boo.open(AudioSystem.getAudioInputStream(new File("Audio/Small Crowd Booing Sound Effect.wav")));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
+		Clip jacob = null; //ToDo - Add repeat pictures, add sound (motor, win sound [clap], fail sound [waw waw]), add comments, fix sound loops?
+		Clip clap = null;
 		while (playAgainLoop == 1) {
+			try {
+				boo = AudioSystem.getClip();
+				boo.open(AudioSystem.getAudioInputStream(new File("Audio/Small Crowd Booing Sound Effect.wav")));
+				jacob = AudioSystem.getClip();
+				jacob.open(AudioSystem.getAudioInputStream(new File("Audio/sweatshirt.wav")));
+				clap = AudioSystem.getClip();
+				clap.open(AudioSystem.getAudioInputStream(new File("Audio/clapping.wav")));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
 			//First Choice = Asks if user is okay with their name being Monique, if they say no, it loops until they say yes.
 			c.println("Your name is Monique, is this okay? (Yes/No)");
 			c.drawImage (pngImage1, 175, 200, 750, 422, null); 
@@ -135,7 +141,8 @@ public class AdventureGame {
 								userReply = c.readString();
 								if (userReply.equalsIgnoreCase("Nice")) {
 									c.clear();
-									c.println("WOW! AMAZING! YOU MEET JACOB SATORIUS!! WOOHOO!"); //Play Sweatshirt
+									jacob.start();
+									c.println("WOW! AMAZING! YOU MEET JACOB SATORIUS!! WOOHOO!");
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Yes")) {
@@ -249,6 +256,7 @@ public class AdventureGame {
 										c.clear();
 										c.drawImage (pngImage7, 0, 0, 1160, 422, null);	
 										c.drawImage (pngImage8, 0, 422, 1160, 422, null);
+										clap.start();
 										c.println("You go on a Pizza Hut date and later become the homecoming queen!");	
 										c.println("Would you like to play again? (Yes/No)");
 										
@@ -309,6 +317,7 @@ public class AdventureGame {
 													userReply = c.readString();
 													if (userReply.equalsIgnoreCase("Yes")){
 														c.clear();
+														clap.start();
 														c.println("You live happily ever after!");
 														c.println("Would you like to play again? (Yes/No)");
 														userReply = c.readString();
@@ -513,6 +522,7 @@ public class AdventureGame {
 										}
 										else {
 											c.clear();
+											clap.start();
 											c.println("Chad asks if you want to go to homecoming and you ace your calculus test.");
 											c.println("Would you like to play again? (Yes/No)");
 											userReply = c.readString();
@@ -574,6 +584,7 @@ public class AdventureGame {
 											userReply = c.readString();
 											if (userReply.equalsIgnoreCase("No")){
 												c.clear();
+												clap.start();
 												c.println("You survive! Congratulations, high school is great!");
 												c.println("Would you like to play again? (Yes/No)");
 												userReply = c.readString();
@@ -717,6 +728,3 @@ public class AdventureGame {
 		}
 	}
 }
-//Add sounds
-//Add comments
-//Add more pictures
