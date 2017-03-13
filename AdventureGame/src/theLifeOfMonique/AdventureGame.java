@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-import hsa_new.Console;
+import hsa_new.Console; //
 
 /**
  * AdventureGame.java
