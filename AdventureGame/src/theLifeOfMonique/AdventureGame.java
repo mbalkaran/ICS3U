@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-import hsa_new.Console; //
+import hsa_new.Console;
 
 /**
  * AdventureGame.java
@@ -20,8 +20,8 @@ import hsa_new.Console; //
 public class AdventureGame {
 
 	public static void main(String[] args) {
-		Console c = new Console(40, 140, "A Day in The Life of Monique"); //console size and font size TBD
-		int playAgainLoop = 1;
+		Console c = new Console(40, 140, "A Day in The Life of Monique"); //sets the console to be larger whilst giving it a title
+		int playAgainLoop = 1; //loops the game while it equals 1, only changes if user answers "no" when asked to play again
 		BufferedImage pngImage1 = null;
 		BufferedImage pngImage2 = null;
 		BufferedImage pngImage3 = null;
@@ -67,9 +67,13 @@ public class AdventureGame {
 			System.err.println("There was an error loading the image.");
 			e.printStackTrace();
 		}
+		//The images (1 - 20) are declared and loaded before the loop, doesn't need to re-load after each loop
 		Clip boo = null;
-		Clip jacob = null; //ToDo - Add repeat pictures, add sound (motor, win sound [clap], fail sound [waw waw]), add comments, fix sound loops?
+		Clip jacob = null; 
 		Clip clap = null;
+		Clip lose = null;
+		Clip bike = null;
+		Clip boom = null;
 		while (playAgainLoop == 1) {
 			try {
 				boo = AudioSystem.getClip();
@@ -78,62 +82,74 @@ public class AdventureGame {
 				jacob.open(AudioSystem.getAudioInputStream(new File("Audio/sweatshirt.wav")));
 				clap = AudioSystem.getClip();
 				clap.open(AudioSystem.getAudioInputStream(new File("Audio/clapping.wav")));
+				lose = AudioSystem.getClip();
+				lose.open(AudioSystem.getAudioInputStream(new File("Audio/fail.wav")));
+				bike = AudioSystem.getClip();
+				bike.open(AudioSystem.getAudioInputStream(new File("Audio/motor.wav")));
+				boom = AudioSystem.getClip();
+				boom.open(AudioSystem.getAudioInputStream(new File("Audio/explosion.wav")));
 			} catch (Exception e) {
 				e.printStackTrace();
-			}	
-			//First Choice = Asks if user is okay with their name being Monique, if they say no, it loops until they say yes.
-			c.println("Your name is Monique, is this okay? (Yes/No)");
-			c.drawImage (pngImage1, 175, 200, 750, 422, null); 
-			String userReply;
+			}
+			//The audio clips are declared before the loop but loaded each time it loops to reset each sound if user plays again
+			c.println("Your name is Monique, is this okay? (Yes/No)"); //If the user says no, it loops until they say yes
+			c.drawImage (pngImage1, 175, 200, 750, 422, null); //sets image parameters to take the center of the console
+			String userReply; //userReply is always used to get the user's choices with the exception of choosing to play again
 			userReply = c.readString();
 			if (userReply.equalsIgnoreCase("No")){
-				while (!userReply.equalsIgnoreCase("Yes")){
+				while (!userReply.equalsIgnoreCase("Yes")){ //once in the loop, they will be stuck in the loop unless they type yes, typing anything else will continue the loop
 					c.println("The game is called 'A Day in the Life of Monique'... Is this okay? (Yes/No)");
 					userReply = c.readString();
 				}
 			}
 			else if (userReply.equalsIgnoreCase("Yes")) {
-				do { //This loops allows the user to repeat their choice if they decide to apologize to their parents after complaining.
+				do { //This loops allows the user to repeat their choice if they decide to apologize to their parents after complaining
 					c.clear();
 					c.drawImage (pngImage2, 0, 0, 1160, 844, null);
-					if (userReply.equalsIgnoreCase("Apologize")){
+					if (userReply.equalsIgnoreCase("Apologize")){ //only appears in loop
 						c.println("You're forgiven :)");
 					}
-					c.println("Today is your first day of grade 12. Do you complain to your parents about making you switch schools or go down for breakfast? \n(Complain/Breakfast)");
+					c.println("Today is your first day of grade 12. Do you complain to your parents about making you switch schools or go down for breakfast? \n(Complain/Breakfast)"); ///n is used to fit the text to the specified console size 
 					userReply = c.readString();
 					if (userReply.equalsIgnoreCase("Breakfast")) {
 						c.clear();
-						c.drawImage (pngImage3, 0, 0, 1160, 844, null);
+						c.drawImage (pngImage3, 0, 0, 1160, 844, null); //all images with these parameters (1160 x 844) are background images to the console
 						c.println("Would you like to get a drive or bike to school? (Bike/Drive)");
 						userReply = c.readString();
 						if (userReply.equalsIgnoreCase("Bike")) {
 							c.clear();
+							bike.start();
 							c.drawImage (pngImage4, 0, 0, 1160, 844, null);
 							c.println("Would you like to take the safe way or the dangerous way? (Safe/Dangerous)");
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Dangerous")) {
-								int RNG1 = (int)(Math.random()*9 + 1);
-								if (RNG1 < 6) {
+								bike.stop(); //all ".stops" stop the music after a decision where audio had played to prevent audio from carrying over
+								int RNG1 = (int)(Math.random()*9 + 1); //Random Number Generator for 1 - 10)
+								if (RNG1 < 6) { //50/50 chance
 									c.clear();
-									c.println("It was a dream."); 
+									c.println("It was a dream."); //forces the user to play again unlike other loops/endings where it asks for user input 
 								}
 								else {
-									c.clear();
+									c.clear();								
+									lose.start();
 									c.drawImage (pngImage20, 0, 0, 1160, 844, null);
 									c.println("You fall in a ditch.");
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Yes")) {
+										lose.stop();
 										c.clear();
 									}
-									else {
+									else { //if the user types anything but yes whenever they are asked if they want to play again, the game will close
 										playAgainLoop = 2;
+										lose.stop();
 										c.close();
 									}
 								}
 							}
 							else if (userReply.equalsIgnoreCase("Safe")) {
 								c.clear();
+								bike.stop();
 								c.println("You go to the office to get your locker code.");
 								c.println("INTENSE! The student president vote is a tie.");
 								c.println("As the new girl you have the last vote.");
@@ -146,50 +162,62 @@ public class AdventureGame {
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Yes")) {
+										jacob.stop();
 										c.clear();
 									}
 									else {
 										playAgainLoop = 2;
+										jacob.stop();
 										c.close();
 									}
 								}
 								else if (userReply.equalsIgnoreCase("Mean")) {
 									c.clear();
+									clap.start();
 									c.println("VAMPIRE ATTACK! oh no! Luckily it was Edward. #togetherforever");
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Yes")) {
+										clap.stop();
 										c.clear();
 									}
 									else {
 										playAgainLoop = 2;
+										clap.stop();
 										c.close();
 									}
 								}
-								else {
+								else { //else statements accept any user input if they mistype something, ends the game and asks if they want to play again
 									c.clear();
+									lose.start();
 									c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Yes")) {
+										lose.stop();
 										c.clear();
 									}
 									else {
 										playAgainLoop = 2;
+										lose.stop();
 										c.close();
 									}
 								}
 							}
 							else {
 								c.clear();
+								bike.stop();
+								lose.start();
 								c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 								c.println("Would you like to play again? (Yes/No)");
 								userReply = c.readString();
 								if (userReply.equalsIgnoreCase("Yes")) {
+									lose.stop();
 									c.clear();
 								}
 								else {
 									playAgainLoop = 2;
+									lose.stop();
 									c.close();
 								}
 							}
@@ -197,19 +225,23 @@ public class AdventureGame {
 						else if (userReply.equalsIgnoreCase("Drive")) {
 							c.clear();
 							c.drawImage (pngImage5, 0, 0, 1160, 422, null);
-							c.drawImage (pngImage6, 0, 422, 1160, 422, null);
+							c.drawImage (pngImage6, 0, 422, 1160, 422, null); // these parameters are half the height of the previous background so that two images can be stacked
+							// (-, 422, -, -) changes the y-axis to move the second image accordingly as planned
 							c.println("Your mom embarrasses you. Brittany makes fun of you. What do you do? (Fight/Ignore)");
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Ignore")) {
 								c.clear();
+								boo.start();
 								c.println("Your high school expreience sucks. Don't be a loser");
 								c.println("Would you like to play again? (Yes/No)");
 								userReply = c.readString();
 								if (userReply.equalsIgnoreCase("Yes")) {
+									boo.stop();
 									c.clear();
 								}
 								else {
 									playAgainLoop = 2;
+									boo.stop();
 									c.close();
 								}
 							}
@@ -223,14 +255,15 @@ public class AdventureGame {
 									boo.start();
 									c.drawImage (pngImage16, 0, 0, 1160, 844, null);
 									c.println("You lost the fight. #loser :(");
-									//insert the boo sound
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Yes")) {
+										boo.stop();
 										c.clear();
 									}
 									else {
 										playAgainLoop = 2;
+										boo.stop();
 										c.close();
 									}
 								}
@@ -241,14 +274,18 @@ public class AdventureGame {
 									c.println("Ah wow! You are one lucky gal. Troy and Chad both ask you out. Who do you choose? (Troy/Chad/Both/Neither)");
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Troy")){
+										c.clear();
+										lose.start();
 										c.println("UH OH! Troy was dating Brittany. She later finds you and pushes you down the stairs.");
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
+											lose.stop();
 											c.clear();
 										}
 										else {
 											playAgainLoop = 2;
+											lose.stop();
 											c.close();
 										}
 									}
@@ -259,26 +296,31 @@ public class AdventureGame {
 										clap.start();
 										c.println("You go on a Pizza Hut date and later become the homecoming queen!");	
 										c.println("Would you like to play again? (Yes/No)");
-										
+
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
+											clap.stop();
 											c.clear();
 										}
 										else {
 											playAgainLoop = 2;
+											clap.stop();
 											c.close();
 										}
 									}
 									else if (userReply.equalsIgnoreCase("Neither")){
 										c.clear();
+										lose.start();
 										c.println("How could you do that??? EPIC FAIL!");
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
+											lose.stop();
 											c.clear();
 										}
 										else {
 											playAgainLoop = 2;
+											lose.stop();
 											c.close();
 										}
 									}
@@ -288,20 +330,24 @@ public class AdventureGame {
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Troy")){
 											c.clear();
+											lose.start();
 											c.drawImage (pngImage19, 0, 0, 1160, 844, null);
 											c.println("You go over to his house to hang out. His cat comes near you and you run because you're allergic and you get hit by a car!");
 											c.println("Would you like to play again? (Yes/No)");
 											userReply = c.readString();
 											if (userReply.equalsIgnoreCase("Yes")) {
+												lose.stop();
 												c.clear();
 											}
 											else {
 												playAgainLoop = 2;
+												lose.stop();
 												c.close();
 											}
 										}
-										else if (userReply.equalsIgnoreCase("Chad")){
+										else if (userReply.equalsIgnoreCase("Chad")){ 
 											c.clear();
+											// user is unable to say no in this segment proceeding forward, if they say no they are looped back to beginning of this segment involving Chad
 											do {
 												if (userReply.equalsIgnoreCase("No")){
 													c.println("What's wrong with you!?");
@@ -322,10 +368,12 @@ public class AdventureGame {
 														c.println("Would you like to play again? (Yes/No)");
 														userReply = c.readString();
 														if (userReply.equalsIgnoreCase("Yes")) {
+															clap.stop();
 															c.clear();
 														}
 														else {
 															playAgainLoop = 2;
+															clap.stop();
 															c.close();
 														}
 													}
@@ -334,14 +382,17 @@ public class AdventureGame {
 													}
 													else {
 														c.clear();
+														lose.start();
 														c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 														c.println("Would you like to play again? (Yes/No)");
 														userReply = c.readString();
 														if (userReply.equalsIgnoreCase("Yes")) {
+															lose.stop();
 															c.clear();
 														}
 														else {
 															playAgainLoop = 2;
+															lose.stop();
 															c.close();
 														}
 													}
@@ -351,14 +402,17 @@ public class AdventureGame {
 												}
 												else {
 													c.clear();
+													lose.start();
 													c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 													c.println("Would you like to play again? (Yes/No)");
 													userReply = c.readString();
 													if (userReply.equalsIgnoreCase("Yes")) {
+														lose.stop();
 														c.clear();
 													}
 													else {
 														playAgainLoop = 2;
+														lose.stop();
 														c.close();
 													}
 												}
@@ -366,70 +420,85 @@ public class AdventureGame {
 										}
 										else {
 											c.clear();
+											lose.start();
 											c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 											c.println("Would you like to play again? (Yes/No)");
 											userReply = c.readString();
 											if (userReply.equalsIgnoreCase("Yes")) {
+												lose.stop();
 												c.clear();
 											}
 											else {
 												playAgainLoop = 2;
+												lose.stop();
 												c.close();
 											}
 										}
 									}
 									else {
 										c.clear();
+										lose.start();
 										c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
+											lose.stop();
 											c.clear();
 										}
 										else {
 											playAgainLoop = 2;
+											lose.stop();
 											c.close();
 										}
 									}
 								}
 								else {
 									c.clear();
+									lose.start();
 									c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Yes")) {
+										lose.stop();
 										c.clear();
 									}
 									else {
 										playAgainLoop = 2;
+										lose.stop();
 										c.close();
 									}
 								}
 							}
 							else {
 								c.clear();
+								lose.start();
 								c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 								c.println("Would you like to play again? (Yes/No)");
 								userReply = c.readString();
 								if (userReply.equalsIgnoreCase("Yes")) {
+									lose.stop();
 									c.clear();
 								}
 								else {
 									playAgainLoop = 2;
+									lose.stop();
 									c.close();
 								}
 							}
 						}
 						else {
 							c.clear();
+							lose.start();
 							c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 							c.println("Would you like to play again? (Yes/No)");
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Yes")) {
+								lose.stop();
 								c.clear();
 							}
 							else {
 								playAgainLoop = 2;
+								lose.stop();
 								c.close();
 							}
 						}
@@ -443,26 +512,29 @@ public class AdventureGame {
 							c.clear();
 							c.drawImage (pngImage9, 0, 0, 1160, 844, null);
 							c.print("You are late to school but it's okay. You go to the office to get your locker combo. It will be: ");
-							int[]lockerCode = new int[4];
-							for (int i = 0; i < lockerCode.length; i++) {
-								lockerCode[i] = (int)(Math.random()*9);
-								c.print(lockerCode[i]);
+							int[]lockerCode = new int[4]; //creates array for four ints to be stored
+							for (int i = 0; i < lockerCode.length; i++) { //for loop loops the length of the array (4) 
+								lockerCode[i] = (int)(Math.random()*9); //for each loop a random number from 0 - 9 is entered into the array corresponding with the increasing for loop counter 
+								c.print(lockerCode[i]); //the end goal of the loop is to print these 4 individual randomly generated numbers
 							}
 							c.println("");
 							c.println("Brittany approaches you seeing that you are lost. What is your next class? (Phys.Ed/Calculus)");
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Phys.Ed")){
 								c.clear();
+								boom.start();
 								c.drawImage (pngImage10, 0, 0, 1160, 844, null);
 								c.println("You meet a boy named Troy. You fall madly in love!");									
 								c.println("OBLITERATION!");
 								c.println("Would you like to play again? (Yes/No)");
 								userReply = c.readString();
 								if (userReply.equalsIgnoreCase("Yes")) {
+									boom.stop();
 									c.clear();
 								}
 								else {
 									playAgainLoop = 2;
+									boom.stop();
 									c.close();
 								}
 							}
@@ -478,30 +550,36 @@ public class AdventureGame {
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Library")){
 										c.clear();
+										clap.start();
 										c.drawImage (pngImage12, 0, 0, 1160, 422, null);
 										c.drawImage (pngImage13, 0, 422, 1160, 422, null);
 										c.println("You and Chad become close friends and together learn Latin and move to Peru!");
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
+											clap.stop();
 											c.clear();
 										}
 										else {
 											playAgainLoop = 2;
+											clap.stop();
 											c.close();
 										}
 									}
 									else if (userReply.equalsIgnoreCase("Cafe")){
 										c.clear();
+										lose.start();
 										c.drawImage (pngImage15, 0, 0, 1160, 844, null);
 										c.println("Your ex boyfriend is there and he thinks Chad is your boyfriend. They fight and Chad goes to the hospital.");
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
+											lose.stop();
 											c.clear();
 										}
 										else {
 											playAgainLoop = 2;
+											lose.stop();
 											c.close();
 										}
 									}
@@ -509,14 +587,17 @@ public class AdventureGame {
 										int RNG2 = (int)(Math.random()*9 + 1);
 										if (RNG2 < 6) {
 											c.clear();
+											lose.start();
 											c.println("Your mom comes home and catches you and you're gorunded for a year.");
 											c.println("Would you like to play again? (Yes/No)");
 											userReply = c.readString();
 											if (userReply.equalsIgnoreCase("Yes")) {
+												lose.stop();
 												c.clear();
 											}
 											else {
 												playAgainLoop = 2;
+												lose.stop();
 												c.close();
 											}
 										}
@@ -527,24 +608,29 @@ public class AdventureGame {
 											c.println("Would you like to play again? (Yes/No)");
 											userReply = c.readString();
 											if (userReply.equalsIgnoreCase("Yes")) {
+												clap.stop();
 												c.clear();
 											}
 											else {
 												playAgainLoop = 2;
+												clap.stop();
 												c.close();
 											}
 										}
 									}
 									else {
 										c.clear();
+										lose.start();
 										c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
+											lose.stop();
 											c.clear();
 										}
 										else {
 											playAgainLoop = 2;
+											lose.stop();
 											c.close();
 										}
 									}
@@ -561,19 +647,23 @@ public class AdventureGame {
 									lockerReply2 = c.readInt();
 									lockerReply3 = c.readInt();
 									if (lockerReply0 == lockerCode[0] && lockerReply1 == lockerCode[1] && lockerReply2 == lockerCode[2] && lockerReply3 == lockerCode[3]){
-										c.clear();
+										c.clear(); //the user must recall what the randomly generated locker number was and enter each number individually into each part of the array
+										// if the user gets each number of the code right, they are invited to a party and can further progress
 										c.println("She invites you to a party tonight. Do you go? (Yes/No)");
 										userReply = c.readString();
 										if(userReply.equalsIgnoreCase("No")){
 											c.clear();
+											lose.start();
 											c.println("Wrong choice! Always Party!");
 											c.println("Would you like to play again? (Yes/No)");
 											userReply = c.readString();
 											if (userReply.equalsIgnoreCase("Yes")) {
+												lose.stop();
 												c.clear();
 											}
 											else {
 												playAgainLoop = 2;
+												lose.stop();
 												c.close();
 											}
 										}
@@ -589,93 +679,113 @@ public class AdventureGame {
 												c.println("Would you like to play again? (Yes/No)");
 												userReply = c.readString();
 												if (userReply.equalsIgnoreCase("Yes")) {
+													clap.stop();
 													c.clear();
 												}
 												else {
 													playAgainLoop = 2;
+													clap.stop();
 													c.close();
 												}
 											}
 											else if (userReply.equalsIgnoreCase("Yes")){
 												c.clear();
+												lose.start();
 												c.drawImage (pngImage18, 0, 0, 1160, 844, null);
 												c.println("You are caught! The police come and you are charged with embezzelment.");
 												c.println("Would you like to play again? (Yes/No)");
 												userReply = c.readString();
 												if (userReply.equalsIgnoreCase("Yes")) {
+													lose.stop();
 													c.clear();
 												}
 												else {
 													playAgainLoop = 2;
+													lose.stop();
 													c.close();
 												}
 											}
 											else {
 												c.clear();
+												lose.start();
 												c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 												c.println("Would you like to play again? (Yes/No)");
 												userReply = c.readString();
 												if (userReply.equalsIgnoreCase("Yes")) {
+													lose.stop();
 													c.clear();
 												}
 												else {
 													playAgainLoop = 2;
+													lose.stop();
 													c.close();
 												}
 											}
 										}
 										else {
 											c.clear();
+											lose.start();
 											c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
 											c.println("Would you like to play again? (Yes/No)");
 											userReply = c.readString();
 											if (userReply.equalsIgnoreCase("Yes")) {
+												lose.stop();
 												c.clear();
 											}
 											else {
 												playAgainLoop = 2;
+												lose.stop();
 												c.close();
 											}
 										}
 									}
-									else {
+									else { //if the user gets the code wrong, they are brought to a bad end and are asked to play again
 										c.clear();
+										lose.start();
 										c.println("You spend your night at home studying... high school sucks and you're a failure");
 										c.println("Would you like to play again? (Yes/No)");
 										userReply = c.readString();
 										if (userReply.equalsIgnoreCase("Yes")) {
 											c.clear();
+											lose.stop();
 										}
 										else {
 											playAgainLoop = 2;
+											lose.stop();
 											c.close();
 										}
 									}
 								}
 								else {
 									c.clear();
-									c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
+									lose.start();
+									c.println("You spend your night at home studying... high school sucks and you're a failure");
 									c.println("Would you like to play again? (Yes/No)");
 									userReply = c.readString();
 									if (userReply.equalsIgnoreCase("Yes")) {
 										c.clear();
+										lose.stop();
 									}
 									else {
 										playAgainLoop = 2;
+										lose.stop();
 										c.close();
 									}
 								}
 							}
 							else {
 								c.clear();
-								c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
+								lose.start();
+								c.println("You spend your night at home studying... high school sucks and you're a failure");
 								c.println("Would you like to play again? (Yes/No)");
 								userReply = c.readString();
 								if (userReply.equalsIgnoreCase("Yes")) {
 									c.clear();
+									lose.stop();
 								}
 								else {
 									playAgainLoop = 2;
+									lose.stop();
 									c.close();
 								}
 							}
@@ -685,28 +795,34 @@ public class AdventureGame {
 						}
 						else {
 							c.clear();
-							c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
+							lose.start();
+							c.println("You spend your night at home studying... high school sucks and you're a failure");
 							c.println("Would you like to play again? (Yes/No)");
 							userReply = c.readString();
 							if (userReply.equalsIgnoreCase("Yes")) {
 								c.clear();
+								lose.stop();
 							}
 							else {
 								playAgainLoop = 2;
+								lose.stop();
 								c.close();
 							}
 						}
 					}
 					else {
 						c.clear();
-						c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
+						lose.start();
+						c.println("You spend your night at home studying... high school sucks and you're a failure");
 						c.println("Would you like to play again? (Yes/No)");
 						userReply = c.readString();
 						if (userReply.equalsIgnoreCase("Yes")) {
 							c.clear();
+							lose.stop();
 						}
 						else {
 							playAgainLoop = 2;
+							lose.stop();
 							c.close();
 						}
 					}
@@ -714,14 +830,17 @@ public class AdventureGame {
 			}
 			else {
 				c.clear();
-				c.println("Wow, you clearly don't know how to read. Next time, be careful with your spelling.");
+				lose.start();
+				c.println("You spend your night at home studying... high school sucks and you're a failure");
 				c.println("Would you like to play again? (Yes/No)");
 				userReply = c.readString();
 				if (userReply.equalsIgnoreCase("Yes")) {
 					c.clear();
+					lose.stop();
 				}
 				else {
 					playAgainLoop = 2;
+					lose.stop();
 					c.close();
 				}
 			}
