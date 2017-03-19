@@ -588,7 +588,7 @@ public class AdventureGame {
 										if (RNG2 < 6) {
 											c.clear();
 											lose.start();
-											c.println("Your mom comes home and catches you and you're gorunded for a year.");
+											c.println("Your mom comes home and catches you and you're grounded for a year.");
 											c.println("Would you like to play again? (Yes/No)");
 											userReply = c.readString();
 											if (userReply.equalsIgnoreCase("Yes")) {
