@@ -1,6 +1,3 @@
-/**
- * 
- */
 package balkaran;
 
 import java.util.Scanner;
