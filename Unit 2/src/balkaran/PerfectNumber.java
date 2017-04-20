@@ -12,7 +12,7 @@ public class PerfectNumber {
 		for (int i = 1; i <= 1000; i++) { //i is the number being checked to be a perfect number or not
 			int total = 0;
 			for (int x = i - 1; x >= 1; x--) { //for loop for factors, starts at i - 1 so not to include itself as a number
-				if (i % x == 0) { //checks to see if the number is a factor of i
+				if (isDivisible(i,x)) {
 					total = total + x; //if number is a factor of i it is added to a total
 				}
 			}
@@ -21,4 +21,17 @@ public class PerfectNumber {
 			}
 		}
 	}
+	
+	/**
+	 * The method determines whether two numbers are divisible by each other
+	 * @param i - The number being tested to be a perfect number (the numerator for method isDivisible)
+	 * @param x - The number being tested as divisible, to be a factor of i (the denominator for method isDivisible)
+	 * @return true or false - true means it is divisible (making it a factor of i), while false means it is not divisible
+	 */
+	public static boolean isDivisible (int i, int x) {
+		if (i % x == 0) {
+			return true;
+		}
+		return false;
+	}	
 }
