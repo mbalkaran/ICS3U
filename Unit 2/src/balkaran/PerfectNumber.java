@@ -10,18 +10,30 @@ public class PerfectNumber {
 
 	public static void main(String[] args) {
 		for (int i = 1; i <= 1000; i++) { //i is the number being checked to be a perfect number or not
-			int total = 0;
-			for (int x = i - 1; x >= 1; x--) { //for loop for factors, starts at i - 1 so not to include itself as a number
-				if (isDivisible(i,x)) {
-					total = total + x; //if number is a factor of i it is added to a total
-				}
-			}
-			if (total == i) { //if the factors found added together equal the original number it is a perfect number and it is printed
+			if (isPerfectNumber(i)) {
 				System.out.println(i);
 			}
 		}
 	}
-	
+
+	/**
+	 * The method determines whether a number is a perfect number
+	 * @param i - the number being tested as a perfect number, i is tested in a loop for numbers 1 - 1000
+	 * @return true or false - true means the number is perfect while false means it is not perfect
+	 */
+	public static boolean isPerfectNumber (int i) {
+		int total = 0;
+		for (int x = i - 1; x >= 1; x--) { //for loop for factors, starts at i - 1 so not to include itself as a number
+			if (isDivisible(i,x)) {
+				total = total + x; //if number is a factor of i it is added to a total
+			}
+		}
+		if (total == i) { //if the factors found added together equal the original number it is a perfect number and it is printed in the main method
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * The method determines whether two numbers are divisible by each other
 	 * @param i - The number being tested to be a perfect number (the numerator for method isDivisible)
