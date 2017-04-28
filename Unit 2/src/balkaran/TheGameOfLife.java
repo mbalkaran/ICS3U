@@ -35,6 +35,7 @@ public class TheGameOfLife {
 		for (int r = 0; r < 20; r++) {
 			for (int c = 0; c < 20; c++) {
 				System.out.print(grid[r][c]); //prints final beginning grid using for loop and previous information
+				System.out.print(" ");
 			}
 			System.out.println();
 		}
@@ -47,25 +48,15 @@ public class TheGameOfLife {
 			if (userContinue.equalsIgnoreCase("Y")) {
 				for (int r = 0; r < 20; r++) {
 					for (int c = 0; c < 20; c++) {
-						if (grid[r][c] == 'X') {
-							if (positionRules(grid, r, c)) {
-								newGrid[r][c] = 'X';
-								System.out.print(newGrid[r][c]); //remains alive
-							}
-							else {
-								newGrid[r][c] = '0';
-								System.out.print(newGrid[r][c]); //dies
-							}
+						if (positionRules(grid, r, c)) {
+							newGrid[r][c] = 'X';
+							System.out.print(newGrid[r][c]); //cell is printed as alive
+							System.out.print(" ");
 						}
 						else {
-							if (positionRules(grid, r, c)) {
-								newGrid[r][c] = 'X';
-								System.out.print(newGrid[r][c]); //becomes alive
-							}
-							else {
-								newGrid[r][c] = '0';
-								System.out.print(newGrid[r][c]); //remains dead
-							}
+							newGrid[r][c] = '0';
+							System.out.print(newGrid[r][c]); //cell is printed as dead
+							System.out.print(" ");
 						}
 					}
 					System.out.println();
@@ -83,7 +74,7 @@ public class TheGameOfLife {
 			else if (userContinue.equalsIgnoreCase("N")){
 				System.out.println("Thanks for playing!");
 			}
-			
+
 		} while (userContinue.equalsIgnoreCase("Y") && !(gameOver(grid))); //does not allow user to continue if all cells are dead
 	}
 
@@ -153,7 +144,7 @@ public class TheGameOfLife {
 			}
 		}
 	}
-	
+
 	/**
 	 * The method determines whether the game will end if all cells are dead
 	 * @param grid - The current initialized grid of live cells and dead cells
