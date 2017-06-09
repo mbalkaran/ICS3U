@@ -36,7 +36,7 @@ public class Sound {
 	}
 }
 
-	/**
+	/*
 		int i;
 		while (Button.readButtons() != 1) {
 			if (sound.readValue()>40) {
