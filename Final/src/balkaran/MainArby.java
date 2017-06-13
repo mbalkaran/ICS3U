@@ -11,12 +11,11 @@ import lejos.robotics.subsumption.Behavior;
 public class MainArby {
 
 	public static void main(String[] args) {
-		Behavior b4 = new ExitProgram();
-		Behavior b3 = new Ultrasonic();
+		Behavior b3 = new ExitProgram();
 		Behavior b2 = new Spin();
 		Behavior b1 = new Calibrate();
 		Behavior b0 = new Movement();
-		Behavior[] behaviors = {b0, b1, b2, b3, b4};
+		Behavior[] behaviors = {b0, b1, b2, b3};
 		
 		Arbitrator arby = new Arbitrator(behaviors);
 		arby.start();
