@@ -20,14 +20,8 @@ public class Calibrate implements Behavior {
 	}
 	public void action() {
 		suppressed = false;
-		Motor.B.rotate(360, true);
-		Delay.msDelay(3000);
-		Motor.C.rotate(720, true);
-		Delay.msDelay(6000);
-		Motor.B.rotate(1080, true);
-		Delay.msDelay(9000);
-		Motor.C.rotate(1440, true);
-		Delay.msDelay(12000);
+		Motor.C.rotate(1440);
+		Motor.B.rotate(1440);
 		while (!suppressed) {
 			Thread.yield();
 		}
