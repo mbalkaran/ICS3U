@@ -88,8 +88,8 @@ public class Scan implements Behavior {
 		Motor.B.stop();
 		Motor.C.stop();
 		do {
-			noise = sound.readValue();
-		} while (noise < 49);
+			noise = sound.readValue(); 
+		} while (noise < 49); //stays in infinite loop until hearing a sound before going back to base
 		Motor.B.rotate(-degree, true); //rotates robot back to location upon reseting tacho count	
 		Motor.C.rotate(-degree); //first rotate is true so both wheels are simultaneous (backwards movement) but wait for robot to finish backing up
 		while (!suppressed) {

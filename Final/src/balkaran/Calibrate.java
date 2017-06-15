@@ -61,6 +61,7 @@ public class Calibrate implements Behavior {
 		Motor.B.rotate(360, true);
 		while (Motor.B.isMoving()) {
 			if (light.getLightValue() < 35) { //same as above
+				Motor.C.stop();
 				suppressed = true;
 			}
 		}
@@ -69,6 +70,7 @@ public class Calibrate implements Behavior {
 		Motor.C.rotate(120, true);
 		while (Motor.C.isMoving()) {
 			if (light.getLightValue() < 35) { //same as above
+				Motor.C.stop();
 				suppressed = true;
 			}
 		}
@@ -76,6 +78,7 @@ public class Calibrate implements Behavior {
 		Motor.B.rotate(120);
 		while (Motor.C.isMoving() && Motor.B.isMoving()) {
 			if (light.getLightValue() < 35) { //same as above
+				Motor.C.stop();
 				suppressed = true;
 			}
 		}
