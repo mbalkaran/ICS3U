@@ -14,16 +14,40 @@ import lejos.robotics.subsumption.Behavior;
 
 public class Calibrate implements Behavior {
 	private boolean suppressed = false;
-	private LightSensor light = new LightSensor(SensorPort.S2);
+	private LightSensor light;
+	public Calibrate(LightSensor ls){
+		this.light = ls;
+	}	
+	
+	/**
+	 * Robot calls this method to suppress the program
+	 * @param no parameters
+	 * @return no return
+	 */
+	
 	public void suppress() {
 		suppressed = true;
 	}
+	
+	/**
+	 * Robot uses method as criteria to take control, this class takes priority based on light sensor (off black path)
+	 * @param no parameters
+	 * @return no return
+	 */
+	
 	public boolean takeControl() {
 		if (light.getLightValue() > 34) { //true if off of black tape path
 			return true;
 		}
 		return false;
 	}
+	
+	/**
+	 * Robot calibrates back onto path or plate whilst it has control, once calibrated it suppresses itself
+	 * @param no parameters
+	 * @return no return
+	 */
+	
 	public void action() {
 		suppressed = false;
 		Motor.C.rotate(360, true);

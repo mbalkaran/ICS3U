@@ -16,23 +16,52 @@ import lejos.util.Delay;
  */
  
 public class Scan implements Behavior {
-	UltrasonicSensor sonar = new UltrasonicSensor(SensorPort.S4);
-	SoundSensor sound = new SoundSensor(SensorPort.S3, true);
-	private LightSensor light = new LightSensor(SensorPort.S2);
+	private SoundSensor sound;
+	private LightSensor light;
+	private UltrasonicSensor sonar;
+	
+	public Scan(UltrasonicSensor lm, SoundSensor lt, LightSensor ls){
+		this.sonar = lm;
+		this.sound = lt;
+		this.light = ls;
+	}
+	
 	private boolean suppressed = false;
+	int noise = 0;
 	int degree = 0;
 	int angle = 0;
 	int largest = 0;
 	int distance = 0;
+	
+	/**
+	 * Robot calls this method to suppress the program
+	 * @param no parameters
+	 * @return no return
+	 */
+	
 	public void suppress() {
 		suppressed = true;
 	}
+	
+	/**
+	 * Robot uses method as criteria to take control, this class takes priority based on light sensor (on plate/base)
+	 * @param no parameters
+	 * @return no return
+	 */
+	
 	public boolean takeControl() {
-		if (light.getLightValue() > 47){ //true if off of black tape path and off table (on a base)
+		if (light.getLightValue() > 47){ //true if on a base (not on path or table)
 			return true; //higher priority, overrides calibrate
 		}
 		return false;
 	}
+	
+	/**
+	 * Robot scans for objects on plate, goes to object, waits for sound, and goes back to plate
+	 * @param no parameters
+	 * @return no return
+	 */
+	
 	public void action() {
 		suppressed = false;
 		Delay.msDelay(1000); //gives time for user to end program upon finding home base
@@ -58,8 +87,9 @@ public class Scan implements Behavior {
 		}
 		Motor.B.stop();
 		Motor.C.stop();
-		while (!(sound.readValue() > 50)) { //waits for sound before going back
-		}
+		do {
+			noise = sound.readValue();
+		} while (noise < 49);
 		Motor.B.rotate(-degree, true); //rotates robot back to location upon reseting tacho count	
 		Motor.C.rotate(-degree); //first rotate is true so both wheels are simultaneous (backwards movement) but wait for robot to finish backing up
 		while (!suppressed) {
