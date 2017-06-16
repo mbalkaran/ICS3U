@@ -50,7 +50,7 @@ public class Scan implements Behavior {
 	 */
 	
 	public boolean takeControl() {
-		if (light.getLightValue() > 47 && light.getLightValue() < 44){ //true if on a base (not on path or table)
+		if (light.getLightValue() > 48){ //true if on a base (not on path or table)
 			return true; //higher priority, overrides calibrate
 		}
 		return false;
