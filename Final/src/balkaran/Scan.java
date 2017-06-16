@@ -69,7 +69,7 @@ public class Scan implements Behavior {
 		while (Motor.B.getTachoCount() < 1440) {
 			degree = Motor.B.getTachoCount(); //saves degrees of robot into variable
 			distance = sonar.getDistance();
-			if (distance > 35) { //negates any distances further than 35cm
+			if (distance > 30) { //negates any distances further than 30cm
 				distance = 0;
 			}
 			if (distance > largest) { //finds largest distance amongst distances found (except those above 35)

@@ -9,7 +9,7 @@ import lejos.robotics.subsumption.Behavior;
 
 /**
  * MainArby.java
- * Executes baseball programs - follows path, finds furtherest object each base, and returns home
+ * Executes baseball programs - follows path, finds furtherest object each base (=<30cm), and returns home
  * 06/14/2017
  * @author Matthew Balkaran
  */
@@ -26,10 +26,10 @@ public class MainArby {
 		LightSensor light = new LightSensor(SensorPort.S2);
 		UltrasonicSensor sonar = new UltrasonicSensor(SensorPort.S4);
 		SoundSensor sound= new SoundSensor(SensorPort.S3);
-		Behavior b3 = new ExitProgram(); //highest priority
-		Behavior b2 = new Scan(sonar, sound, light);
-		Behavior b1 = new Calibrate(light);
-		Behavior b0 = new Movement(); //lowest priority
+		Behavior b3 = new ExitProgram(); //highest priority, ends program
+		Behavior b2 = new Scan(sonar, sound, light); //scans objects, moves to them
+		Behavior b1 = new Calibrate(light); //sets onto path and find home
+		Behavior b0 = new Movement(); //lowest priority, moves forward
 		Behavior[] behaviors = {b0, b1, b2, b3};
 		
 		Arbitrator arby = new Arbitrator(behaviors);
