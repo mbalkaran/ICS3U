@@ -1,5 +1,6 @@
 package balkaran;
 
+import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
@@ -13,8 +14,8 @@ import lejos.robotics.subsumption.Behavior;
  */
 
 public class Calibrate implements Behavior {
+	private boolean exit = false;
 	private boolean suppressed = false;
-	boolean exit = false; //stops calibrating if exit is true
 	private LightSensor light;
 	public Calibrate(LightSensor ls){
 		this.light = ls;
@@ -37,7 +38,7 @@ public class Calibrate implements Behavior {
 	 */
 
 	public boolean takeControl() {
-		if (light.getLightValue() > 34) { //true if off of black tape path
+		if (light.getLightValue() > 31 && light.getLightValue() < 48) { //true if off of black tape path
 			return true;
 		}
 		return false;
@@ -51,52 +52,58 @@ public class Calibrate implements Behavior {
 
 	public void action() {
 		suppressed = false;
-		Motor.C.rotate(360, true);
-		while (Motor.C.isMoving()) {
-			if (light.getLightValue() < 35) { //stops if it finds path
-				Motor.C.stop();
-				exit = true; //each exit = true prevents further calibrating
-			}
-		}
-		if (exit == false) {
-			Motor.C.rotate(-360); //doesn't need to prevent further calibrating since this only undoes previous action
-		}
+		exit = false;
 		if (exit == false) {
 			Motor.B.rotate(360, true);
-			while (Motor.B.isMoving()) {
-				if (light.getLightValue() < 35) { //same as above
-					Motor.C.stop();
-					exit = true; //same as above
+			while (Motor.B.isMoving() && !suppressed) {
+				LCD.drawInt(1, 0, 0); //for debugging
+				if (light.getLightValue() < 31) { //stops if it finds path
+					Motor.B.stop();
+					exit = true; //each exit  = true prevents further calibrating
 				}
 			}
 		}
 		if (exit == false) {
-			Motor.B.rotate(-360);
+			Motor.B.rotate(-360); //doesn't need to prevent further calibrating since this only undoes previous action
+		}
+		if (exit == false) {
+			Motor.C.rotate(360, true);
+			while (Motor.C.isMoving() && !suppressed) {
+				LCD.drawInt(2, 0, 1); //for debugging
+				if (light.getLightValue() < 31) { //same as above
+					Motor.C.stop();
+					exit = true;//same as above
+				}
+			}
+		}
+		if (exit == false) {
+			Motor.C.rotate(-360);
 		}
 		//rotates 90 degrees left and back, and right and back (180 degrees in front of robot)
 		if (exit == false) {
-			Motor.C.rotate(120, true);
-			while (Motor.C.isMoving()) {
-				if (light.getLightValue() < 35) { //same as above
-					Motor.C.stop();
+			Motor.B.rotate(120, true);
+			while (Motor.B.isMoving() && !suppressed) {
+				LCD.drawInt(3, 0, 2); //for debugging
+				if (light.getLightValue() < 31) { //same as above
+					Motor.B.stop();
 					exit = true; //same as above
+
 				}
 			}
 		}
 		if (exit == false) {
-			Motor.C.rotate(120, true);
-			Motor.B.rotate(120);
-			while (Motor.C.isMoving() && Motor.B.isMoving()) {
-				if (light.getLightValue() < 35) { //same as above
+			Motor.B.rotate(120, true);
+			Motor.C.rotate(120);
+			while (Motor.C.isMoving() && Motor.B.isMoving() && !suppressed) {
+				LCD.drawInt(4, 0, 3); //for debugging
+				if (light.getLightValue() < 31) { //same as above
 					Motor.C.stop();
+					Motor.B.stop();
 					exit = true; //same as above
 				}
 			}
 		}
 		//shifts forward, to the left, helps in trying to find home base at the end of program
-		while (!suppressed) {
-			Thread.yield();
-		}
 		Motor.B.stop();
 		Motor.C.stop();
 	}

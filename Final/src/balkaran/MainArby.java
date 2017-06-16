@@ -9,7 +9,7 @@ import lejos.robotics.subsumption.Behavior;
 
 /**
  * MainArby.java
- * Executes baseball programs - follows path, finds furtherest object each base (=<30cm), and returns home
+ * Executes baseball programs - follows path, finds furtherest, 2nd furtherest, and closest object each base (=<38cm), and returns home
  * 06/14/2017
  * @author Matthew Balkaran
  */

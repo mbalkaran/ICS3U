@@ -50,7 +50,7 @@ public class Scan implements Behavior {
 	 */
 	
 	public boolean takeControl() {
-		if (light.getLightValue() > 47){ //true if on a base (not on path or table)
+		if (light.getLightValue() > 47 && light.getLightValue() < 44){ //true if on a base (not on path or table)
 			return true; //higher priority, overrides calibrate
 		}
 		return false;
@@ -69,18 +69,19 @@ public class Scan implements Behavior {
 		while (Motor.B.getTachoCount() < 1440) {
 			degree = Motor.B.getTachoCount(); //saves degrees of robot into variable
 			distance = sonar.getDistance();
-			if (distance > 30) { //negates any distances further than 30cm
+			if (distance > 38) { //negates any distances further than 38cm to find furtherest, 2nd furtherest, and closest object for corresponding bases
 				distance = 0;
 			}
 			if (distance > largest) { //finds largest distance amongst distances found (except those above 35)
 			largest = distance;
-			angle = degree; //saves degree value of largest distance
+			angle = degree; //saves degree value of largest distance for base accordingly
 			}
 		}
+		Delay.msDelay(1000); //distinctively separates two rotations
 		Motor.B.rotate(angle); //rotates to angle of largest distance
 		Delay.msDelay(500); //gives time in-between stopping at angle and moving
 		Motor.B.resetTachoCount(); //resets tacho count so it can return to this location
-		while (sonar.getDistance() > 6) { //stops 7cm in front of cup
+		while (sonar.getDistance() > 7) { //stops 8cm in front of cup
 			Motor.B.forward();
 			Motor.C.forward();
 			degree = Motor.B.getTachoCount(); //saves degrees traveled to cup
@@ -92,9 +93,6 @@ public class Scan implements Behavior {
 		} while (noise < 49); //stays in infinite loop until hearing a sound before going back to base
 		Motor.B.rotate(-degree, true); //rotates robot back to location upon reseting tacho count	
 		Motor.C.rotate(-degree); //first rotate is true so both wheels are simultaneous (backwards movement) but wait for robot to finish backing up
-		while (!suppressed) {
-			Thread.yield();
-		}
 		Motor.B.stop();
 		Motor.C.stop();
 	}
