@@ -1,5 +1,5 @@
 package com.mydomain;
-
+/*
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.LCD;
@@ -22,3 +22,5 @@ public class BasicMovement {
 	}
 
 }
+
+*/
